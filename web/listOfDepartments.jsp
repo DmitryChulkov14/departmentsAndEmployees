@@ -7,10 +7,14 @@
 <body>
 <h1>Список департаментов:</h1>
 <table border="1">
+    <tr>
+        <td>Название департамента</td>
+        <td colspan="4">Действия</td>
+    </tr>
     <c:forEach items="${depList}" var="department">
         <tr>
-            <form method="get" action="EmployeesServlet">
-                <td>${department.id} ${department.name}</td>
+            <td>${department.name}</td>
+            <form method="get" action="DepartmentActionServlet">
                 <td><input type="submit" name="button" value="Добавить" /></td>
                 <td><input type="submit" name="button" value="Редактировать" /></td>
                 <td><input type="submit" name="button" value="Удалить" /></td>
@@ -21,6 +25,5 @@
         </tr>
     </c:forEach>
 </table>
-
 </body>
 </html>

@@ -1,6 +1,6 @@
 package servlets;
 
-import impl.Departament;
+import impl.Department;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,7 @@ import java.util.Set;
 @WebServlet("/DepartmentsServlet")
 public class DepartmentsServlet extends AbstractServlet {
 
-    private Set<Departament> departments = new LinkedHashSet<>();
+    private Set<Department> departments = new LinkedHashSet<>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,16 +22,15 @@ public class DepartmentsServlet extends AbstractServlet {
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office","jurinson", "admin");
              Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM departments")) {
+             ResultSet rs = st.executeQuery("SELECT * FROM departments ORDER BY id")) {
             departments.clear();
             while (rs.next()) {
-                departments.add(new Departament(rs.getInt("id"), rs.getString("name")));
+                departments.add(new Department(rs.getInt("id"), rs.getString("name")));
             }
-
-            req.setAttribute("depList", departments);
-            req.getRequestDispatcher("listOfDepartments.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        req.setAttribute("depList", departments);
+        req.getRequestDispatcher("/listOfDepartments.jsp").forward(req, resp);
     }
 }
