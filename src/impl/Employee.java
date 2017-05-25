@@ -10,8 +10,12 @@ public class Employee {
     private int salary;
     private Date date;
 
-    public Employee(int id, String name, String email, int salary, Date date) {
+    public Employee() {
+    }
+
+    public Employee(int id, int department_id, String name, String email, int salary, Date date) {
         this.id = id;
+        this.department_id = department_id;
         this.name = name;
         this.email = email;
         this.salary = salary;
@@ -64,5 +68,12 @@ public class Employee {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void clearAllFields() {
+        this.name = "";
+        this.email = "";
+        this.salary = 0;
+        this.date = null;
     }
 }

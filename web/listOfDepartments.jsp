@@ -11,9 +11,15 @@
         <td>Название департамента</td>
         <td colspan="4">Действия</td>
     </tr>
+    <c:set var="isEmptyList" value="${depList}"/>
+    <c:if test="${empty isEmptyList}">
+        <form method="get" action="DepartmentActionServlet">
+            <tr><td colspan="2"><input style="width: 100%" type="submit" name="button" value="Добавить"/></td></tr>
+        </form>
+    </c:if>
     <c:forEach items="${depList}" var="department">
         <tr>
-            <td>${department.name}</td>
+            <td><c:out value="${department.name}" /></td>
             <form method="get" action="DepartmentActionServlet">
                 <td><input type="submit" name="button" value="Добавить" /></td>
                 <td><input type="submit" name="button" value="Редактировать" /></td>

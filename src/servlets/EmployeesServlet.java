@@ -21,24 +21,22 @@ public class EmployeesServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setResponseParams(resp);
-        department.setId(Integer.parseInt(req.getParameter("curDepartment_id")));
-        department.setName(req.getParameter("curDepartment_name"));
-        //String curButton = req.getParameter("button");
+        session = req.getSession();
+        department = (Department) session.getAttribute("department");
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office", "jurinson", "admin");
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM employees WHERE department_id = " + department.getId() + " ORDER BY id")) {
             employees.clear();
             while (rs.next()) {
-                employees.add(new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+                employees.add(new Employee(rs.getInt("id"), department.getId(), rs.getString("name"), rs.getString("email"),
                         rs.getInt("salary"), rs.getDate("date")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        req.setAttribute("employeesList", employees);
-        req.setAttribute("department_name", department.getName());
+        session.setAttribute("employeesList", employees);
         req.getRequestDispatcher("listOfEmployees.jsp").forward(req, resp);
     }
 }

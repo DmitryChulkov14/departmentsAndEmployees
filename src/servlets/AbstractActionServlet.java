@@ -4,16 +4,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public abstract class AbstractActionServlet extends HttpServlet {
+public abstract class AbstractActionServlet extends AbstractServlet {
+
+    String clickedButton;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String clickedButton = req.getParameter("button");
-        callNeededServlet(req, resp, clickedButton);
+        super.session = req.getSession();
+        clickedButton = req.getParameter("button");
+        callNeededServlet(req, resp);
     }
 
-    abstract void callNeededServlet(HttpServletRequest req, HttpServletResponse resp, String clickedButton) throws ServletException, IOException;
+    abstract void callNeededServlet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 }
 

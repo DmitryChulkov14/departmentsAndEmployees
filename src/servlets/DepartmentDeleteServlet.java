@@ -15,7 +15,7 @@ import java.sql.Statement;
 @WebServlet("/DepartmentDeleteServlet")
 public class DepartmentDeleteServlet extends AbstractServlet {
 
-    Department department = new Department();
+    private Department department = new Department();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

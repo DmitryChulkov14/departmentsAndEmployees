@@ -20,30 +20,38 @@ public class DepartmentActionServlet extends AbstractActionServlet {
     }
 
     @Override
-    void callNeededServlet(HttpServletRequest req, HttpServletResponse resp, String clickedButton) throws ServletException, IOException {
+    void callNeededServlet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (clickedButton != null){
             if (clickedButton.equals(Constants.ADD)){
                 department.clearName();
-                setAttributes(req, clickedButton);
+                setAttributes();
                 req.getRequestDispatcher("/departmentEditor.jsp").forward(req, resp);
             }
             if (clickedButton.equals(Constants.EDIT)){
-                department.setId(Integer.parseInt(req.getParameter("curDepartment_id")));
-                department.setName(req.getParameter("curDepartment_name"));
-                setAttributes(req, clickedButton);
+                setDepartmentFields(req);
+                setAttributes();
                 req.getRequestDispatcher("/departmentEditor.jsp").forward(req, resp);
             }
             if (clickedButton.equals(Constants.DELETE)){
                 req.getRequestDispatcher("/DepartmentDeleteServlet").forward(req, resp);
             }
             if (clickedButton.equals(Constants.EMPLOYEES_LIST)){
+                setDepartmentFields(req);
+                setAttributes();
                 req.getRequestDispatcher("/EmployeesServlet").forward(req, resp);
             }
         }
     }
 
-    private void setAttributes(HttpServletRequest req, String clickedButton) {
-        req.setAttribute("clickedButton", clickedButton);
-        req.setAttribute("department", department);
+    private void setDepartmentFields(HttpServletRequest req) {
+        department.setId(Integer.parseInt(req.getParameter("curDepartment_id")));
+        department.setName(req.getParameter("curDepartment_name"));
+    }
+
+    private void setAttributes() {
+        if (!clickedButton.equals(Constants.EMPLOYEES_LIST)){
+            super.session.setAttribute("departmentClickedButton", clickedButton);
+        }
+        super.session.setAttribute("department", department);
     }
 }
