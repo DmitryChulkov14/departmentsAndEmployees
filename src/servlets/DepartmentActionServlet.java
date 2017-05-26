@@ -12,7 +12,7 @@ import java.io.IOException;
 @WebServlet("/DepartmentActionServlet")
 public class DepartmentActionServlet extends AbstractActionServlet {
 
-    Department department = new Department();
+    private Department department = new Department();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

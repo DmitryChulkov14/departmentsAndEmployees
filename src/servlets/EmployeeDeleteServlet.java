@@ -21,7 +21,7 @@ public class EmployeeDeleteServlet extends AbstractServlet {
         session = req.getSession();
         Employee employee = (Employee) session.getAttribute("employee");
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office","jurinson", "admin");
+        try (Connection connection = ds.getConnection();
              Statement st = connection.createStatement()){
             st.executeUpdate("DELETE FROM employees WHERE id = " + employee.getId());
         } catch (SQLException e) {

@@ -24,7 +24,7 @@ public class EmployeesServlet extends AbstractServlet {
         session = req.getSession();
         department = (Department) session.getAttribute("department");
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office", "jurinson", "admin");
+        try (Connection connection = ds.getConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM employees WHERE department_id = " + department.getId() + " ORDER BY id")) {
             employees.clear();

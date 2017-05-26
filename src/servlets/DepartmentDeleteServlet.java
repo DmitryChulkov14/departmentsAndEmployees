@@ -21,7 +21,7 @@ public class DepartmentDeleteServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         department.setId(Integer.parseInt(req.getParameter("curDepartment_id")));
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office","jurinson", "admin");
+        try (Connection connection = ds.getConnection();
              Statement st = connection.createStatement()){
             st.executeUpdate("DELETE FROM departments WHERE id = " + department.getId());
         } catch (SQLException e) {

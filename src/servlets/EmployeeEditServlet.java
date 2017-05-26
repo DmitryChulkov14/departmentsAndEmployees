@@ -23,7 +23,7 @@ public class EmployeeEditServlet extends AbstractServlet {
         session.setAttribute("employee", employee);
         String clickedButton = req.getParameter("button");
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office","jurinson", "admin");
+        try (Connection connection = ds.getConnection();
              Statement st = connection.createStatement()){
             doAddOrEdit(clickedButton, st);
         } catch (SQLException e) {

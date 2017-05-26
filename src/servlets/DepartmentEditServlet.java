@@ -21,7 +21,7 @@ public class DepartmentEditServlet extends AbstractServlet {
         department.setName(req.getParameter("name"));
         String clickedButton = req.getParameter("button");
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/office","jurinson", "admin");
+        try (Connection connection = ds.getConnection();
              Statement st = connection.createStatement()){
             doAddOrEdit(clickedButton, st);
         } catch (SQLException e) {

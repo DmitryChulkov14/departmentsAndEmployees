@@ -1,23 +1,29 @@
 package servlets;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 public abstract class AbstractServlet extends HttpServlet{
 
     HttpSession session;
+    InitialContext initContext;
+    DataSource ds = null;
 
     @Override
     public void init() throws ServletException {
-        registerJDBCDriver();
+        initConnection();
     }
 
-    private void registerJDBCDriver(){
+    void initConnection() {
         try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
+            initContext = new InitialContext();
+            ds = (DataSource) initContext.lookup("java:comp/env/jdbc/dbconnect");
+        } catch (NamingException e) {
             e.printStackTrace();
         }
     }
