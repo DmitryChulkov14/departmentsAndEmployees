@@ -13,6 +13,7 @@ public abstract class AbstractServlet extends HttpServlet{
     HttpSession session;
     InitialContext initContext;
     DataSource ds = null;
+    String clickedButton;
 
     @Override
     public void init() throws ServletException {

@@ -7,11 +7,9 @@ import java.io.IOException;
 
 public abstract class AbstractActionServlet extends AbstractServlet {
 
-    String clickedButton;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.session = req.getSession();
+        session = req.getSession();
         clickedButton = req.getParameter("button");
         callNeededServlet(req, resp);
     }

@@ -9,7 +9,7 @@
 <table border="1">
     <tr>
         <td>Название департамента</td>
-        <td colspan="4">Действия</td>
+        <td colspan="4" align="center">Действия</td>
     </tr>
     <c:set var="isEmptyList" value="${depList}"/>
     <c:if test="${empty isEmptyList}">

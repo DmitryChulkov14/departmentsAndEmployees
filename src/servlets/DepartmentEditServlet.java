@@ -2,6 +2,7 @@ package servlets;
 
 import impl.Constants;
 import impl.Department;
+import org.postgresql.util.PSQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,18 +18,36 @@ public class DepartmentEditServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        department.setId(Integer.parseInt(req.getParameter("curDepartment_id")));
-        department.setName(req.getParameter("name"));
-        String clickedButton = req.getParameter("button");
+        session = req.getSession();
+        setDepartmentFields(req);
+        clickedButton = req.getParameter("button");
 
         try (Connection connection = ds.getConnection();
-             Statement st = connection.createStatement()){
+             Statement st = connection.createStatement()) {
             doAddOrEdit(clickedButton, st);
+        } catch (PSQLException psqle) {
+            prepareDataForRetrying(req);
+            req.getRequestDispatcher("/departmentEditor.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (session.getAttribute("errorMessage") != null){
+                session.removeAttribute("errorMessage");
+            }
         }
 
         req.getRequestDispatcher("/DepartmentsServlet").forward(req, resp);
+    }
+
+    private void setDepartmentFields(HttpServletRequest req) {
+        department.setId(Integer.parseInt(req.getParameter("curDepartment_id")));
+        department.setName(req.getParameter("name"));
+    }
+
+    private void prepareDataForRetrying(HttpServletRequest req) {
+        String errorMessage = "Такое название департамента уже существует. Введите другое название!";
+        session.setAttribute("errorMessage", errorMessage);
+        session.setAttribute("department", department);
     }
 
     private void doAddOrEdit(String clickedButton, Statement st) throws SQLException {

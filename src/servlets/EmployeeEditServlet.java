@@ -3,6 +3,7 @@ package servlets;
 import impl.Constants;
 import impl.Department;
 import impl.Employee;
+import org.postgresql.util.PSQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,17 +21,30 @@ public class EmployeeEditServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setEmployeeFields(req);
         session = req.getSession();
-        session.setAttribute("employee", employee);
-        String clickedButton = req.getParameter("button");
+
+        clickedButton = req.getParameter("button");
 
         try (Connection connection = ds.getConnection();
              Statement st = connection.createStatement()){
             doAddOrEdit(clickedButton, st);
+        }catch (PSQLException psqle) {
+            prepareDataForRetrying(req);
+            req.getRequestDispatcher("/employeeEditor.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (session.getAttribute("errorMessage") != null){
+                session.removeAttribute("errorMessage");
+            }
         }
 
         req.getRequestDispatcher("/EmployeesServlet").forward(req, resp);
+    }
+
+    private void prepareDataForRetrying(HttpServletRequest req) {
+        String errorMessage = "Сотрудник с таким email уже существует. Введите другой email!";
+        session.setAttribute("errorMessage", errorMessage);
+        session.setAttribute("employee", employee);
     }
 
     private void setEmployeeFields(HttpServletRequest req) {

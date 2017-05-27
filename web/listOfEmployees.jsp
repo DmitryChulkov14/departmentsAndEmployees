@@ -9,10 +9,10 @@
 <table border="1">
     <tr>
         <td>Имя сотрудника</td>
-        <td>Email</td>
-        <td>Зарплата</td>
-        <td>Дата</td>
-        <td colspan="3">Действия</td>
+        <td align="center">Email</td>
+        <td align="center">Зарплата</td>
+        <td align="center">Дата</td>
+        <td align="center" colspan="3">Действия</td>
     </tr>
     <c:set var="isEmptyList" value="${employeesList}"/>
     <c:if test="${empty isEmptyList}">
@@ -24,8 +24,8 @@
         <tr>
             <td><c:out value="${employee.name}"/></td>
             <td><c:out value="${employee.email}"/></td>
-            <td><c:out value="${employee.salary}"/></td>
-            <td><c:out value="${employee.date}"/></td>
+            <td align="center"><c:out value="${employee.salary}"/></td>
+            <td align="center"><c:out value="${employee.date}"/></td>
             <form method="get" action="EmployeeActionServlet">
                 <td><input type="submit" name="button" value="Добавить"/></td>
                 <td><input type="submit" name="button" value="Редактировать"/></td>
