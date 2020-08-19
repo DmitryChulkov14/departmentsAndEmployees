@@ -1,4 +1,4 @@
-# departmentsAndEmployees
+# Departments And Employees
   Тестовое задание
   
 Есть сотрудники и департаменты.
